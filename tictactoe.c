@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char matrix[3][3];  // on utilise une matrice de char car elle utilise moins de mémoire
+char matrice[3][3];  // on utilise une matrice de char car elle utilise moins de mémoire
 
 char check(void);
 void init_matrix(void);
@@ -11,83 +11,83 @@ void get_computer_move(void);
 void disp_matrix(void);
 
 // On initialise la matrice avec des espaces
-void init_matrix(void)
+void initialisation_matrice(void)
 {
   int i, j;
 
   for(i=0; i<3; i++)
-    for(j=0; j<3; j++) matrix[i][j] =  ' ';
+    for(j=0; j<3; j++) matrice[i][j] =  ' ';
 }
 
-// Methode qui récupère les coordonnées entrée par le joueur 
-void get_player_move(void)
+// Methode qui récupère les coordonnées entrées par le joueur et vérifie si le mouvement est bien valide
+void mouvement_joueur(void)
 {
   int x, y;
 
-  printf("Enter X,Y coordinates for your move: ");
+  printf("Entrez les coordonnées X,Y pour votre tour : ");
   scanf("%d%*c%d", &x, &y);
 
   x--; y--;
 
-  if(matrix[x][y]!= ' '){
+  if(matrice[x][y]!= ' '){
     printf("Invalid move, try again.\n");
-    get_player_move();
+    mouvement_joueur();
   }
-  else matrix[x][y] = 'X';
+  else matrice[x][y] = 'X';   // Si le mouvement est bien valide on pose 'X' dans les coordonnées données
 }
 
-/* Get a move from the computer. */
-void get_computer_move(void)
+// Méthode permettant d'avoir un mouvement de l'ordinateur
+void mouvement_ordinateur(void)
 {
   int i, j;
-  for(i=0; i<3; i++){
+  for(i=0; i<3; i++){   // vérifie que le mouvement est valide
     for(j=0; j<3; j++)
-      if(matrix[i][j]==' ') break;
-    if(matrix[i][j]==' ') break;
+      if(matrice[i][j]==' ') break;
+    if(matrice[i][j]==' ') break;
   }
 
   if(i*j==9)  {
-    printf("draw\n");
+    printf("égalité\n");
     exit(0);
   }
   else
-    matrix[i][j] = 'O';
+    matrice[i][j] = 'O';
 }
 
-/* Display the matrix on the screen. */
-void disp_matrix(void)
+// Méthode pour afficher la matrice
+void afficher_matrice(void)
 {
-  int t;
+  int x;
 
-  for(t=0; t<3; t++) {
-    printf(" %c | %c | %c ",matrix[t][0],
-            matrix[t][1], matrix [t][2]);
-    if(t!=2) printf("\n---|---|---\n");
+  for(x=0; x<3; x++) {
+    printf(" %c | %c | %c ",matrice[x][0],
+            matrice[x][1], matrice[x][2]);
+    if(x!=2) printf("\n---|---|---\n");
   }
   printf("\n");
 }
 
-/* See if there is a winner. */
+// Méthode pour déterminer s'il y'a un gagnant
 char check(void)
 {
   int i;
 
   for(i=0; i<3; i++)  /* check rows */
-    if(matrix[i][0]==matrix[i][1] &&
-       matrix[i][0]==matrix[i][2]) return matrix[i][0];
+    if(matrice[i][0]==matrice[i][1] &&
+       matrice[i][0]==matrice[i][2]) return matrice[i][0];
 
   for(i=0; i<3; i++)  /* check columns */
-    if(matrix[0][i]==matrix[1][i] &&
-       matrix[0][i]==matrix[2][i]) return matrix[0][i];
+    if(matrice[0][i]==matrice[1][i] &&
+       matrice[0][i]==matrice[2][i]) return matrice[0][i];
 
   /* test diagonals */
-  if(matrix[0][0]==matrix[1][1] &&
-     matrix[1][1]==matrix[2][2])
-       return matrix[0][0];
+  if(matrice[0][0]==matrice[1][1] &&
+     matrice[1][1]==matrice[2][2])
+       return matrice[0][0];
 
-  if(matrix[0][2]==matrix[1][1] &&
-     matrix[1][1]==matrix[2][0])
-       return matrix[0][2];
+  if(matrice[0][2]==matrice[1][1] &&
+     matrice[1][1]==matrice[2][0])
+       return matrice[0][2];
 
   return ' ';
 }
@@ -101,20 +101,21 @@ int main(void)
   printf("Vous jouez contre l'ordinateur\n");
 
   done =  ' ';
-  init_matrix();
+  initialisation_matrice();
 
   do {
-    disp_matrix();
-    get_player_move();
-    done = check(); /* see if winner */
-    if(done!= ' ') break; /* winner!*/
-    get_computer_move();
-    done = check(); /* see if winner */
+    afficher_matrice();
+    mouvement_joueur();
+    done = check();
+    if(done!= ' ') break;
+    mouvement_ordinateur();
+    done = check(); // vérifie s'il y'a un gagnant
   } while(done== ' ');
 
+  afficher_matrice(); // Affiche la matrice
+
   if(done=='X') printf("Vous gagnez !\n");
-  else printf("L'ordinateur gagne\n");
-  disp_matrix(); /* show final positions */
+  else printf("L'ordinateur gagne \n");
 
   return 0;
 }
