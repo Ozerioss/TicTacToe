@@ -62,7 +62,7 @@ void afficher_matrice(void)
   for(x=0; x<3; x++) {
     printf(" %c | %c | %c ",matrice[x][0],
             matrice[x][1], matrice[x][2]);
-    if(x!=2) printf("\n---|---|---\n");
+    if(x!=2) printf("\n---|---|---\n");   // Pour avoir une structure ressemblant celle d'un tableau de 3 par 3
   }
   printf("\n");
 }
@@ -72,15 +72,15 @@ char check(void)
 {
   int i;
 
-  for(i=0; i<3; i++)  /* check rows */
+  for(i=0; i<3; i++)  // vérifie s'il y'a un gagnant sur les lignes
     if(matrice[i][0]==matrice[i][1] &&
        matrice[i][0]==matrice[i][2]) return matrice[i][0];
 
-  for(i=0; i<3; i++)  /* check columns */
+  for(i=0; i<3; i++)  // vérifie s'il y'a un gagnant sur les colomnes
     if(matrice[0][i]==matrice[1][i] &&
        matrice[0][i]==matrice[2][i]) return matrice[0][i];
 
-  /* test diagonals */
+  // Finalement pour vérifier sur les diagonales
   if(matrice[0][0]==matrice[1][1] &&
      matrice[1][1]==matrice[2][2])
        return matrice[0][0];
@@ -98,7 +98,7 @@ int main(void)
   char done;
 
   printf("Jeu de morpion \n");
-  printf("Vous jouez contre l'ordinateur\n");
+  printf("Vous jouez contre l'ordinateur \n");
 
   done =  ' ';
   initialisation_matrice();
@@ -115,7 +115,7 @@ int main(void)
   afficher_matrice(); // Affiche la matrice
 
   if(done=='X') printf("Vous gagnez !\n");
-  else printf("L'ordinateur gagne \n");
+  else printf("L'ordinateur gagne !\n");
 
   return 0;
 }
