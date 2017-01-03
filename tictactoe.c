@@ -4,11 +4,6 @@
 
 char matrice[3][3];  // on utilise une matrice de char car elle utilise moins de mémoire
 
-char check(void);
-void init_matrix(void);
-void get_player_move(void);
-void get_computer_move(void);
-void disp_matrix(void);
 
 // On initialise la matrice avec des espaces
 void initialisation_matrice(void)
